@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import styled from "@emotion/styled";
 import {makeStyles} from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import {getFplStats, getPlayers, getUnderstatPlayers} from "./api/api";
+import {getFplStats, getPlayers, getUnderstatPlayers} from "./api2/api2";
 
 const tableCellWidth = 100
 const commonColFields = {headerAlign: 'center', align: 'left'}

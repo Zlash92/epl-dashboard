@@ -6,7 +6,7 @@ import {makeStyles} from "@material-ui/core/styles";
 
 const TableContainer = styled.div`
     height: 50em;
-    width: 87em;
+    width: 86em;
 `
 
 

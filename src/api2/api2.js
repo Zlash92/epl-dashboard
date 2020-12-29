@@ -1,9 +1,9 @@
 import {round} from "mathjs";
 
-const LEAGUE_PLAYERS_STATS_URL = "https://3hg93n5vqg.execute-api.eu-north-1.amazonaws.com/test/league-players"
-const FANTASY_PREMIER_LEAGUE_URL = "https://fantasy.premierleague.com/api/bootstrap-static/#/"
+export const LEAGUE_PLAYERS_STATS_URL = "https://3hg93n5vqg.execute-api.eu-north-1.amazonaws.com/test/league-players"
+export const FANTASY_PREMIER_LEAGUE_URL = "https://fantasy.premierleague.com/api/bootstrap-static/#/"
 
-const httpRequest = url => fetch(url).then(res => res.json())
+export const httpRequest = url => fetch(url).then(res => res.json())
 
 export const getUnderstatPlayers = () => httpRequest(LEAGUE_PLAYERS_STATS_URL)
 
