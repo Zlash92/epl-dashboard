@@ -23,7 +23,7 @@ export const getPlayers = () => (
 
             return understats.map(stats => {
                 const playerName = mapUnderstatToFplName(stats["player_name"])
-                console.log(isNaN(stats.xG))
+
                 const formattedStats = {
                     ...stats,
                     xG: round(stats.xG, 2),
@@ -43,7 +43,8 @@ export const getPlayers = () => (
                 } else {
                     return {
                         ...formattedStats,
-                        now_cost: formatCost(fplStatsByPlayerName[playerName]["now_cost"])
+                        now_cost: formatCost(fplStatsByPlayerName[playerName]["now_cost"]),
+                        total_points: parseInt(fplStatsByPlayerName[playerName].total_points)
                     }
                 }
 
@@ -51,7 +52,7 @@ export const getPlayers = () => (
         })
 )
 
-const formatCost = cost => (cost / 10).toFixed(1)
+const formatCost = cost => parseFloat((cost / 10).toFixed(1))
 
 const mapUnderstatToFplName = understatName => {
     const correctionsTable = {
@@ -78,7 +79,6 @@ const mapUnderstatToFplName = understatName => {
         "rodri": "rodrigo",
         "marchand": "le marchand",
         "hegazy": "hegazi",
-        // "Martinez",
         "kepa": "arrizabalaga",
         "zambo": "anguissa",
         "smith-rowe": "smith rowe",

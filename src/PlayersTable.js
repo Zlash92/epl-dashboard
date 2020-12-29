@@ -19,6 +19,7 @@ const columns = [
     {...commonColFields, field: 'xG', headerName: 'xG', width: tableCellWidth},
     {...commonColFields, field: 'xA', headerName: 'xA', width: tableCellWidth},
     {...commonColFields, field: 'now_cost', headerName: 'Cost', width: tableCellWidth},
+    {...commonColFields, field: 'total_points', headerName: 'Points', width: tableCellWidth},
     // { field: 'xG90', headerName: 'xG90', width: tableCellWidth },  // TODO: xG / (time/90)
     // { field: 'xA90', headerName: 'xA90', width: tableCellWidth },  // TODO: xA / (time/90)
 ];
