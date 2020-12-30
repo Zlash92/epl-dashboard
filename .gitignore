@@ -24,3 +24,5 @@ yarn-error.log*
 
 # Idea
 .idea
+
+.vercel
