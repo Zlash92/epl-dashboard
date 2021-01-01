@@ -1,4 +1,5 @@
 import {round} from "mathjs";
+import chain from 'lodash'
 
 const httpRequest = url => fetch(url).then(res => res.json())
 
@@ -9,19 +10,21 @@ export const getFplStats = () => httpRequest("/api/fpl")
 export const getPlayers = () => (
     Promise.all([getUnderstatPlayers(), getFplStats()])
         .then(([understats, fplStats]) => {
-            const fplStatsByPlayerName = fplStats['elements'].reduce((map, player) => {
-                    const playerName = player["web_name"]
-                    return {
-                        ...map,
-                        [normalizeName(playerName)]: player
-                    }
-                }, {}
-            )
+            const fplStatsByWebName = chain(fplStats['elements'])
+                .groupBy("web_name")
+                .value()
+
+            const fplStatsByWebNameNormalized = Object.keys(fplStatsByWebName).reduce((map, key) => (
+                {
+                    ...map,
+                    [normalizeName(key)]: fplStatsByWebName[key]
+                }
+            ), {})
 
             return understats.map(stats => {
-                const playerName = mapUnderstatToFplName(stats["player_name"])
+                const playerFplStats = findFplStatsByUnderstatsName(stats["player_name"], fplStatsByWebNameNormalized)
 
-                const formattedStats = {
+                const formattedUnderstats = {
                     ...stats,
                     xG: round(stats.xG, 2),
                     xA: round(stats.xA, 2),
@@ -30,18 +33,17 @@ export const getPlayers = () => (
                     assists: parseInt(stats.assists)
                 }
 
-                if (fplStatsByPlayerName[playerName] === undefined) {
-                    console.log(`${playerName} is not mapped`)
-
+                if (playerFplStats === null) {
+                    console.log(`${playerFplStats} is not mapped`)
 
                     return {
-                        ...formattedStats,
+                        ...formattedUnderstats,
                     }
                 } else {
                     return {
-                        ...formattedStats,
-                        now_cost: formatCost(fplStatsByPlayerName[playerName]["now_cost"]),
-                        total_points: parseInt(fplStatsByPlayerName[playerName].total_points)
+                        ...formattedUnderstats,
+                        now_cost: formatCost(playerFplStats.now_cost),
+                        total_points: parseInt(playerFplStats.total_points)
                     }
                 }
 
@@ -91,6 +93,20 @@ const mapUnderstatToFplName = understatName => {
         ? understatName.toLowerCase()
         : understatName === "Matthew Longstaff" ? "matty longstaff"
         : correctionsTable[normalizedName] || normalizedName
+}
+
+const findFplStatsByUnderstatsName = (understatName, fplStatsByWebName) => {
+    const mappedName = mapUnderstatToFplName(understatName)
+    const fplStats = fplStatsByWebName[mappedName]
+
+    if (fplStats === undefined) {
+        console.log(`${understatName} is not mapped`)
+        return null
+    } else if (fplStats.length === 1) {
+        return fplStats[0]
+    } else {  // Multiple entries for same web name. Need to match on first name
+        return fplStats.find(player => player["first_name"].includes(understatName.split("")[0]))
+    }
 }
 
 const normalizeName = name => name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
