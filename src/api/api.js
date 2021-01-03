@@ -23,14 +23,27 @@ export const getPlayers = () => (
 
             return understats.map(stats => {
                 const playerFplStats = findFplStatsByUnderstatsName(stats["player_name"], fplStatsByWebNameNormalized)
+                const per90minFactor = stats.time / 90
 
                 const formattedUnderstats = {
                     ...stats,
                     xG: round(stats.xG, 2),
                     xA: round(stats.xA, 2),
+                    shots: round(stats.shots, 2),
                     time: parseInt(stats.time),
                     goals: parseInt(stats.goals),
-                    assists: parseInt(stats.assists)
+                    assists: parseInt(stats.assists),
+                    xGBuildup: parseInt(stats.xGBuildup),
+                    xGChain: parseInt(stats.xGChain),
+                    key_passes: parseInt(stats.key_passes),
+                    goals90: round(stats.goals / per90minFactor, 2),
+                    assists90: round(stats.assists / per90minFactor, 2),
+                    shots90: round(stats.shots / per90minFactor, 2),
+                    xG90: round(stats.xG / per90minFactor, 2),
+                    xA90: round(stats.xA / per90minFactor, 2),
+                    xGBuildup90: round(stats.xGBuildup / per90minFactor, 2),
+                    xGChain90: round(stats.xGChain / per90minFactor, 2),
+                    key_passes90: round(stats.key_passes / per90minFactor, 2)
                 }
 
                 if (playerFplStats === null) {
