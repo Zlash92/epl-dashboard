@@ -6,10 +6,11 @@ import styled from "@emotion/styled";
 import TextField from "@material-ui/core/TextField";
 import {createStyles, makeStyles} from "@material-ui/core/styles";
 import PlayersTable from "./PlayersTable";
+import {COLOR_BACKGROUND_DARK_BLUE} from "./Colors";
 
 const WrapperDiv = styled.div`
     display: flex;
-    background-color: #282c34;
+    background-color: ${COLOR_BACKGROUND_DARK_BLUE};
     justify-content: center;
 `
 

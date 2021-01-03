@@ -4,6 +4,9 @@ import styled from "@emotion/styled";
 import {makeStyles} from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import {getFplStats, getPlayers, getUnderstatPlayers} from "./api/api";
+import {Modal} from "@material-ui/core";
+import PlayerDetails from "./PlayerDetails";
+import {css} from "@emotion/core";
 
 const tableCellWidth = 100
 const commonColFields = {headerAlign: 'center', align: 'left'}
@@ -42,24 +45,25 @@ const useStyles = makeStyles({
         '& .MuiFormLabel-root': {
             color: '#fbfbfb',
         }
+    },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
-
 });
+
 
 const PlayersTable = () => {
     const [leaguePlayers, setLeaguePlayers] = useState([])
     const [query, setQuery] = useState("")
+    const [openModal, setOpenModal] = useState(false)
+    const [modalData, setModalData] = useState(null)
     console.log(leaguePlayers)
     const classes = useStyles()
 
     useEffect(() => {
         console.log("FETCHING DATA")
-        // getUnderstatPlayers()
-        //     .then(res => setLeaguePlayers(res))
-        //     .catch(error => console.log(error))
-        //
-        // getFplStats()
-        //     .then(res => console.log(res))
 
         getPlayers()
             .then(res => setLeaguePlayers(res))
@@ -78,6 +82,13 @@ const PlayersTable = () => {
         })
     }
 
+    const handlePlayerCellClick = cell => {
+        setOpenModal(true)
+
+        setModalData(cell.data)
+
+    }
+
     return (
         <ContainerDiv>
             <TextField
@@ -90,7 +101,22 @@ const PlayersTable = () => {
                     className: classes.input
                 }}
             />
-            <DataTable data={filterPlayers(leaguePlayers, query)} colHeaders={columns}/>
+            <DataTable
+                data={filterPlayers(leaguePlayers, query)}
+                colHeaders={columns}
+                onCellClick={cell => handlePlayerCellClick(cell)}
+            />
+            <Modal
+                className={classes.modal}
+                open={openModal}
+                onClose={() => setOpenModal(false)}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+            >
+                <div>
+                    <PlayerDetails data={modalData} />
+                </div>
+            </Modal>
         </ContainerDiv>
     )
 }
