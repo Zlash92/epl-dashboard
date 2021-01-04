@@ -12,10 +12,9 @@ const tableCellWidth = 100
 const commonColFields = {headerAlign: 'center', align: 'left'}
 
 const columns = [
-    {...commonColFields, field: 'id', headerName: 'ID', width: tableCellWidth},
     {...commonColFields, field: 'player_name', headerName: 'Name', width: 200},
-    {...commonColFields, field: 'team_title', headerName: 'Team', width: 150},
-    {...commonColFields, field: 'games', headerName: 'Apps', width: tableCellWidth},
+    {...commonColFields, field: 'team', headerName: 'Team', width: 150},
+    {...commonColFields, field: 'appearances', headerName: 'Apps', width: tableCellWidth},
     {...commonColFields, field: 'time', headerName: 'Min', width: tableCellWidth},
     {...commonColFields, field: 'goals', headerName: 'G', width: tableCellWidth},
     {...commonColFields, field: 'assists', headerName: 'Assists', width: tableCellWidth},

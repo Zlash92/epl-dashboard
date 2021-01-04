@@ -26,7 +26,10 @@ export const getPlayers = () => (
                 const per90minFactor = stats.time / 90
 
                 const formattedUnderstats = {
-                    ...stats,
+                    id: stats.id,
+                    team: stats.team_title,
+                    appearances: stats.games,
+                    player_name: stats.player_name,
                     xG: round(stats.xG, 2),
                     xA: round(stats.xA, 2),
                     shots: round(stats.shots, 2),
@@ -43,7 +46,7 @@ export const getPlayers = () => (
                     xA90: round(stats.xA / per90minFactor, 2),
                     xGBuildup90: round(stats.xGBuildup / per90minFactor, 2),
                     xGChain90: round(stats.xGChain / per90minFactor, 2),
-                    key_passes90: round(stats.key_passes / per90minFactor, 2)
+                    key_passes90: round(stats.key_passes / per90minFactor, 2),
                 }
 
                 if (playerFplStats === null) {
