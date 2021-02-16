@@ -3,10 +3,9 @@ import React, {useEffect, useState} from "react";
 import styled from "@emotion/styled";
 import {makeStyles} from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import {getFplStats, getPlayers, getUnderstatPlayers} from "./api/api";
+import {getPlayers} from "./api/api";
 import {Modal} from "@material-ui/core";
 import PlayerDetails from "./PlayerDetails";
-import {css} from "@emotion/core";
 
 const tableCellWidth = 100
 const commonColFields = {headerAlign: 'center', align: 'left'}
@@ -27,10 +26,11 @@ const columns = [
 ];
 
 const ContainerDiv = styled.div`
-    min-height: 100vh;
-    background-color: #282c34;
-    display: flex;
-    flex-direction: column
+  //min-height: 100vh;
+  margin-bottom: 20px;
+  background-color: #282c34;
+  display: flex;
+  flex-direction: column
 `
 
 const useStyles = makeStyles({
@@ -53,21 +53,13 @@ const useStyles = makeStyles({
 });
 
 
-const PlayersTable = () => {
-    const [leaguePlayers, setLeaguePlayers] = useState([])
+const PlayersTable = ({ playersData = [] }) => {
+    console.log(playersData)
     const [query, setQuery] = useState("")
     const [openModal, setOpenModal] = useState(false)
     const [modalData, setModalData] = useState(null)
-    console.log(leaguePlayers)
+
     const classes = useStyles()
-
-    useEffect(() => {
-        console.log("FETCHING DATA")
-
-        getPlayers()
-            .then(res => setLeaguePlayers(res))
-            .catch(error => console.log(error))
-    }, []);
 
     const onPlayerSearch = (event) => {
         const query = event.target.value
@@ -101,7 +93,7 @@ const PlayersTable = () => {
                 }}
             />
             <DataTable
-                data={filterPlayers(leaguePlayers, query)}
+                data={filterPlayers(playersData, query)}
                 colHeaders={columns}
                 onCellClick={cell => handlePlayerCellClick(cell)}
             />
@@ -113,7 +105,7 @@ const PlayersTable = () => {
                 aria-describedby="simple-modal-description"
             >
                 <div>
-                    <PlayerDetails data={modalData} />
+                    <PlayerDetails data={modalData}/>
                 </div>
             </Modal>
         </ContainerDiv>

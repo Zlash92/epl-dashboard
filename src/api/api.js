@@ -1,11 +1,20 @@
 import {round} from "mathjs";
 import chain from 'lodash'
+import fetch from "node-fetch";
+
+const queryString = require('query-string');
 
 const httpRequest = url => fetch(url).then(res => res.json())
 
-export const getUnderstatPlayers = () => httpRequest("/api/league-players")
+const getFplStats = () => httpRequest("/api/fpl")
+const getUnderstatPlayers = () => httpRequest("/api/league-players")
+const getSingleUnderstatPlayerMatches = playerId => httpRequest(`/api/player-matches/${playerId}`)
+export const getUnderstatPlayersMatches = playerIds => {
+    const queryParams = queryString.stringify({playerIds});
+    const url = `/api/player-matches?${queryParams}`
 
-export const getFplStats = () => httpRequest("/api/fpl")
+    return httpRequest(url)
+}
 
 export const getPlayers = () => (
     Promise.all([getUnderstatPlayers(), getFplStats()])
@@ -66,6 +75,12 @@ export const getPlayers = () => (
             })
         })
 )
+
+export const getSinglePlayerMatches = playerIds => {
+    const results = playerIds.map(playerId => getSingleUnderstatPlayerMatches(playerId))
+    return Promise.all(results)
+        .then(allMatchStats => allMatchStats)
+}
 
 const formatCost = cost => parseFloat((cost / 10).toFixed(1))
 
