@@ -4,10 +4,14 @@ import fetch from "node-fetch";
 
 const queryString = require('query-string');
 
-const httpRequest = url => fetch(url).then(res => res.json())
+const httpRequest = url => {
+    return fetch(url).then(res => res.json())
+}
 
 const getFplStats = () => httpRequest("/api/fpl")
 const getUnderstatPlayers = () => httpRequest("/api/league-players")
+
+export const getAllUnderstatPlayersMatches = () => httpRequest("/api/player-matches/all")
 const getSingleUnderstatPlayerMatches = playerId => httpRequest(`/api/player-matches/${playerId}`)
 export const getUnderstatPlayersMatches = playerIds => {
     const queryParams = queryString.stringify({playerIds});

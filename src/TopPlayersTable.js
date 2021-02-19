@@ -1,10 +1,12 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {getSinglePlayerMatches} from "./api/api";
 import DataTable from "./Table";
 import {number, round} from "mathjs";
 import {range, sumBy} from "./Utils";
 import {FormHelperText, MenuItem, Select} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
+import styled from "@emotion/styled";
+import TextField from "@material-ui/core/TextField";
 
 const tableCellWidth = 100
 const commonColFields = {headerAlign: 'center', align: 'left'}
@@ -26,6 +28,15 @@ const columns = [
     // { field: 'xA90', headerName: 'xA90', width: tableCellWidth },  // TODO: xA / (time/90)
 ];
 
+const ContainerDiv = styled.div`
+  //min-height: 100vh;
+  margin-bottom: 20px;
+  background-color: #282c34;
+  display: flex;
+  flex-direction: column
+`
+
+
 const useStyles = makeStyles({
     select: {
         color: 'white',
@@ -36,6 +47,11 @@ const useStyles = makeStyles({
     },
     helperText: {
         '& .MuiFormHelperText-root': {
+            color: '#fbfbfb'
+        },
+    },
+    input: {
+        '& .MuiInputBase-input': {
             color: '#fbfbfb'
         },
     },
@@ -51,7 +67,8 @@ const useStyles = makeStyles({
     }
 });
 
-const TopPlayersTable = ({ playersData = [] }) => {
+const TopPlayersTable = ({playersData = []}) => {
+    const [query, setQuery] = useState("")
     const [numberOfGames, setNumberOfGames] = useState(1)
     const [playersMatches, setPlayersMatches] = useState([])
 
@@ -66,7 +83,7 @@ const TopPlayersTable = ({ playersData = [] }) => {
             if (!player.matches.hasOwnProperty("message")) {  // TODO
                 const lastMatches = player.matches.slice(0, numberOfGames)
                 // Add player name, team
-                const stats =  {
+                const stats = {
                     goals: sumBy(lastMatches, match => parseInt(match.goals)),
                     shots: sumBy(lastMatches, match => parseInt(match.shots)),
                     xG: sumBy(lastMatches, match => round(parseFloat(match.xG), 2)),
@@ -101,12 +118,22 @@ const TopPlayersTable = ({ playersData = [] }) => {
         setNumberOfGames(event.target.value)
     }
 
+    const onPlayerSearch = (event) => {
+        const query = event.target.value
+        console.log(query)
+        setQuery(query)
+    }
+
+    const filterPlayers = (players, query) => {
+        return players.filter(player => {
+            return player['player_name'].toLowerCase().includes(query.toLowerCase())
+        })
+    }
+
     const menuItems = range(1, 11, 1).map(i => <MenuItem key={i} value={i}>{i}</MenuItem>);
 
     return (
-        // <></>
         <>
-            {/* Buttons for choosing last number of games */}
             <Select
                 classes={classes.select}
                 labelId="demo-simple-select-helper-label"
@@ -127,10 +154,22 @@ const TopPlayersTable = ({ playersData = [] }) => {
             >
                 Aggregate last x matches
             </FormHelperText>
-            <DataTable
-                data={playersMatches}
-                colHeaders={columns}
-            />
+            <ContainerDiv>
+                <TextField
+                    className={classes.label}
+                    onChange={onPlayerSearch}
+                    id="standard-search"
+                    label="Player search"
+                    type="search"
+                    InputProps={{
+                        className: classes.input
+                    }}
+                />
+                <DataTable
+                    data={filterPlayers(playersMatches, query)}
+                    colHeaders={columns}
+                />
+            </ContainerDiv>
         </>
     )
 }

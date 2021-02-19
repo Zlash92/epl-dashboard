@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import styled from "@emotion/styled";
 import PlayersTable from "./PlayersTable";
 import {COLOR_BACKGROUND_DARK_BLUE} from "./Colors";
-import {getPlayers, getUnderstatPlayersMatches} from "./api/api";
+import {getAllUnderstatPlayersMatches, getPlayers, getUnderstatPlayersMatches} from "./api/api";
 import TopPlayersTable from "./TopPlayersTable";
 
 const queryString = require('query-string');
@@ -31,9 +31,11 @@ const App = () => {
     useEffect(() => {
         console.log("Fetch players matches")
         const playerIds = leaguePlayers.map(player => player.id)
+
+        console.log("playerIds for match fetch ", playerIds)
         console.time("matches")
         if (leaguePlayers.length > 0) {  // TODO: Remove
-            getUnderstatPlayersMatches(playerIds)
+            getAllUnderstatPlayersMatches()
                 .then(data => {
                     // Get names
                     console.timeEnd("matches")
