@@ -89,6 +89,7 @@ export const getSinglePlayerMatches = playerIds => {
 const formatCost = cost => parseFloat((cost / 10).toFixed(1))
 
 const mapUnderstatToFplName = understatName => {
+    // Key: Understat player_name; Value: Fpl web_name
     const correctionsTable = {
         "heung-min": "son",
         "ghazi": "el ghazi",
@@ -117,6 +118,8 @@ const mapUnderstatToFplName = understatName => {
         "zambo": "anguissa",
         "smith-rowe": "smith rowe",
         "vinicius": "carlos vinicius",
+        "odegaard": "ødegaard",
+        "jose": "willian jose",
         "o&#039;connell": "o'connell",
         "n&#039;lundulu": "n'lundulu",
         "o&#039;shea": "o'shea"
@@ -135,7 +138,7 @@ const findFplStatsByUnderstatsName = (understatName, fplStatsByWebName) => {
     const fplStats = fplStatsByWebName[mappedName]
 
     if (fplStats === undefined) {
-        console.log(`${understatName} is not mapped`)
+        console.log(`${understatName} is not mapped. Mapped name that failed: ${mappedName}`)
         return null
     } else if (fplStats.length === 1) {
         return fplStats[0]
