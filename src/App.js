@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import PlayersTable from "./PlayersTable";
 import {COLOR_BACKGROUND_DARK_BLUE} from "./Colors";
 import {getAllUnderstatPlayersMatches, getPlayers, getUnderstatPlayersMatches} from "./api/api";
-import TopPlayersTable from "./TopPlayersTable";
+import AggregatedMatchStatsTable from "./AggregatedMatchStatsTable";
 
 const queryString = require('query-string');
 
@@ -55,7 +55,7 @@ const App = () => {
     return (
         <WrapperDiv>
             <PlayersTable playersData={leaguePlayers} />
-            <TopPlayersTable playersData={playersMatches}/>
+            <AggregatedMatchStatsTable playersData={playersMatches}/>
         </WrapperDiv>
     );
 }

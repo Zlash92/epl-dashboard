@@ -7,6 +7,8 @@ import {FormHelperText, MenuItem, Select} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import styled from "@emotion/styled";
 import TextField from "@material-ui/core/TextField";
+import {css} from "@emotion/core";
+import {COLOR_TEXT_WHITE} from "./Colors";
 
 const tableCellWidth = 100
 const commonColFields = {headerAlign: 'center', align: 'left'}
@@ -39,25 +41,21 @@ const ContainerDiv = styled.div`
 
 const useStyles = makeStyles({
     select: {
-        color: 'white',
-        '& .MuiInputBase-root': {
-            color: '#fbfbfb'
-        },
-
+        // backgroundColor: "black",
+        borderColor: "black",
+        color: COLOR_TEXT_WHITE
     },
     helperText: {
-        '& .MuiFormHelperText-root': {
-            color: '#fbfbfb'
-        },
+        color: COLOR_TEXT_WHITE
     },
     input: {
         '& .MuiInputBase-input': {
-            color: '#fbfbfb'
+            color: COLOR_TEXT_WHITE
         },
     },
     label: {
         '& .MuiFormLabel-root': {
-            color: '#fbfbfb',
+            color: COLOR_TEXT_WHITE,
         }
     },
     modal: {
@@ -67,7 +65,7 @@ const useStyles = makeStyles({
     }
 });
 
-const TopPlayersTable = ({playersData = []}) => {
+const AggregatedMatchStatsTable = ({playersData = []}) => {
     const [query, setQuery] = useState("")
     const [numberOfGames, setNumberOfGames] = useState(1)
     const [playersMatches, setPlayersMatches] = useState([])
@@ -134,8 +132,10 @@ const TopPlayersTable = ({playersData = []}) => {
 
     return (
         <>
+            <h1 style={{color: COLOR_TEXT_WHITE}}>Aggregated player stats across matches</h1>
+            <p style={{color: COLOR_TEXT_WHITE}}>Use dropdown to select the number of previous matches for stats aggregation</p>
             <Select
-                classes={classes.select}
+                classes={{root: classes.select}}
                 labelId="demo-simple-select-helper-label"
                 id="demo-simple-select-helper"
                 value={numberOfGames}
@@ -147,10 +147,7 @@ const TopPlayersTable = ({playersData = []}) => {
                 {menuItems}
             </Select>
             <FormHelperText
-                classe={classes.helperText}
-                InputProps={{
-                    className: classes.select
-                }}
+                classes={{root: classes.helperText}}
             >
                 Aggregate last x matches
             </FormHelperText>
@@ -174,4 +171,4 @@ const TopPlayersTable = ({playersData = []}) => {
     )
 }
 
-export default TopPlayersTable;
+export default AggregatedMatchStatsTable;

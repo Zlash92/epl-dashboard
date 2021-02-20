@@ -6,6 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import {getPlayers} from "./api/api";
 import {Modal} from "@material-ui/core";
 import PlayerDetails from "./PlayerDetails";
+import {COLOR_TEXT_WHITE} from "./Colors";
 
 const tableCellWidth = 100
 const commonColFields = {headerAlign: 'center', align: 'left'}
@@ -36,13 +37,13 @@ const ContainerDiv = styled.div`
 const useStyles = makeStyles({
     input: {
         '& .MuiInputBase-input': {
-            color: '#fbfbfb'
+            color: COLOR_TEXT_WHITE
         },
 
     },
     label: {
         '& .MuiFormLabel-root': {
-            color: '#fbfbfb',
+            color: COLOR_TEXT_WHITE,
         }
     },
     modal: {
