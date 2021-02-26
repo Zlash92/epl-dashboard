@@ -1,7 +1,6 @@
 import React from 'react';
-import {DataGrid} from '@material-ui/data-grid';
+import {DataGrid, GridToolbar} from '@material-ui/data-grid';
 import styled from "@emotion/styled";
-import {css} from "@emotion/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {COLOR_TEXT_WHITE} from "./Colors";
 
@@ -19,7 +18,7 @@ const useStyles = makeStyles({
 
 })
 
-const DataTable = ({ data, colHeaders, onCellClick }) => {
+const DataTable = ({ data, colHeaders, onCellClick, onRowSelected, checkboxSelection }) => {
     const classes = useStyles();
 
     const handleSelectionChange = selectedRows => {
@@ -31,10 +30,17 @@ const DataTable = ({ data, colHeaders, onCellClick }) => {
             <DataGrid
                 className={classes.cell}
                 rows={data}
-                columns={colHeaders}
+                columns={colHeaders.map((column) => ({
+                    ...column,
+                    // disableClickEventBubbling: true,  // TODO: What is this?
+                }))}
                 pageSize={10}
-                checkboxSelection
+                checkboxSelection={checkboxSelection}
                 onCellClick={onCellClick}
+                onRowSelected={onRowSelected}
+                components={{
+                    Toolbar: GridToolbar,
+                }}
             />
         </TableContainer>
     );

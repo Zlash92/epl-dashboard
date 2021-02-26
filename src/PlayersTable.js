@@ -56,17 +56,17 @@ const useStyles = makeStyles({
 
 const PlayersTable = ({ playersData = [] }) => {
     console.log(playersData)
-    const [query, setQuery] = useState("")
+    // const [query, setQuery] = useState("")
     const [openModal, setOpenModal] = useState(false)
     const [modalData, setModalData] = useState(null)
 
     const classes = useStyles()
 
-    const onPlayerSearch = (event) => {
-        const query = event.target.value
-        console.log(query)
-        setQuery(query)
-    }
+    // const onPlayerSearch = (event) => {
+    //     const query = event.target.value
+    //     console.log(query)
+    //     setQuery(query)
+    // }
 
     const filterPlayers = (players, query) => {
         return players.filter(player => {
@@ -77,24 +77,24 @@ const PlayersTable = ({ playersData = [] }) => {
     const handlePlayerCellClick = cell => {
         setOpenModal(true)
 
-        setModalData(cell.data)
+        setModalData(cell.row)
 
     }
 
     return (
         <ContainerDiv>
-            <TextField
-                className={classes.label}
-                onChange={onPlayerSearch}
-                id="standard-search"
-                label="Player search"
-                type="search"
-                InputProps={{
-                    className: classes.input
-                }}
-            />
+            {/*<TextField*/}
+            {/*    className={classes.label}*/}
+            {/*    onChange={onPlayerSearch}*/}
+            {/*    id="standard-search"*/}
+            {/*    label="Player search"*/}
+            {/*    type="search"*/}
+            {/*    InputProps={{*/}
+            {/*        className: classes.input*/}
+            {/*    }}*/}
+            {/*/>*/}
             <DataTable
-                data={filterPlayers(playersData, query)}
+                data={playersData}
                 colHeaders={columns}
                 onCellClick={cell => handlePlayerCellClick(cell)}
             />

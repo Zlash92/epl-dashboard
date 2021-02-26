@@ -65,9 +65,9 @@ const useStyles = makeStyles({
     }
 });
 
-const AggregatedMatchStatsTable = ({playersData = []}) => {
-    const [query, setQuery] = useState("")
-    const [numberOfGames, setNumberOfGames] = useState(1)
+const AggregatedMatchStatsTable = ({playersData = [], onRowSelected}) => {
+    // const [query, setQuery] = useState("")
+    const [numberOfGames, setNumberOfGames] = useState(3)
     const [playersMatches, setPlayersMatches] = useState([])
 
     const classes = useStyles()
@@ -116,11 +116,11 @@ const AggregatedMatchStatsTable = ({playersData = []}) => {
         setNumberOfGames(event.target.value)
     }
 
-    const onPlayerSearch = (event) => {
-        const query = event.target.value
-        console.log(query)
-        setQuery(query)
-    }
+    // const onPlayerSearch = (event) => {
+    //     const query = event.target.value
+    //     console.log(query)
+    //     setQuery(query)
+    // }
 
     const filterPlayers = (players, query) => {
         return players.filter(player => {
@@ -152,19 +152,21 @@ const AggregatedMatchStatsTable = ({playersData = []}) => {
                 Aggregate last x matches
             </FormHelperText>
             <ContainerDiv>
-                <TextField
-                    className={classes.label}
-                    onChange={onPlayerSearch}
-                    id="standard-search"
-                    label="Player search"
-                    type="search"
-                    InputProps={{
-                        className: classes.input
-                    }}
-                />
+                {/*<TextField*/}
+                {/*    className={classes.label}*/}
+                {/*    onChange={onPlayerSearch}*/}
+                {/*    id="standard-search"*/}
+                {/*    label="Player search"*/}
+                {/*    type="search"*/}
+                {/*    InputProps={{*/}
+                {/*        className: classes.input*/}
+                {/*    }}*/}
+                {/*/>*/}
                 <DataTable
-                    data={filterPlayers(playersMatches, query)}
+                    data={playersMatches}
                     colHeaders={columns}
+                    onRowSelected={onRowSelected}
+                    checkboxSelection={true}
                 />
             </ContainerDiv>
         </>
