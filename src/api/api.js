@@ -69,6 +69,7 @@ export const getPlayers = () => (
                         ...formattedUnderstats,
                     }
                 } else {
+                    if (playerFplStats === undefined) console.log("now_cost fail",stats["player_name"])
                     return {
                         ...formattedUnderstats,
                         now_cost: formatCost(playerFplStats.now_cost),
@@ -122,7 +123,8 @@ const mapUnderstatToFplName = understatName => {
         "jose": "willian jose",
         "o&#039;connell": "o'connell",
         "n&#039;lundulu": "n'lundulu",
-        "o&#039;shea": "o'shea"
+        "o&#039;shea": "o'shea",
+        "alli": "dele"
     }
 
     const normalizedName = normalizeName(understatName.split(' ').pop())
@@ -130,6 +132,9 @@ const mapUnderstatToFplName = understatName => {
     return understatName === "David Luiz" || understatName === "Douglas Luiz" || understatName === "Sean Longstaff"
         ? understatName.toLowerCase()
         : understatName === "Matthew Longstaff" ? "matty longstaff"
+        : understatName === "Bernardo Silva" ? "bernardo"
+        : understatName === "Adam Armstrong" ? "a.armstrong"
+        : understatName === "Juan Camilo Hernández" ? "cucho"
         : correctionsTable[normalizedName] || normalizedName
 }
 
