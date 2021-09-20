@@ -18,12 +18,8 @@ const useStyles = makeStyles({
 
 })
 
-const DataTable = ({ data, colHeaders, onCellClick, onRowSelected, checkboxSelection }) => {
+const DataTable = ({ data, colHeaders, onCellClick, onRowSelected, onSelectionModelChange, checkboxSelection }) => {
     const classes = useStyles();
-
-    const handleSelectionChange = selectedRows => {
-        console.log(selectedRows)
-    }
 
     return (
         <TableContainer>
@@ -38,6 +34,7 @@ const DataTable = ({ data, colHeaders, onCellClick, onRowSelected, checkboxSelec
                 checkboxSelection={checkboxSelection}
                 onCellClick={onCellClick}
                 onRowSelected={onRowSelected}
+                onSelectionModelChange={onSelectionModelChange}
                 components={{
                     Toolbar: GridToolbar,
                 }}

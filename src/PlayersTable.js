@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import {makeStyles} from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import {getPlayers} from "./api/api";
-import {Modal} from "@material-ui/core";
+import {Button, Modal} from "@material-ui/core";
 import PlayerDetails from "./PlayerDetails";
 import {COLOR_TEXT_WHITE} from "./Colors";
 
@@ -58,7 +58,9 @@ const PlayersTable = ({ playersData = [] }) => {
     console.log(playersData)
     // const [query, setQuery] = useState("")
     const [openModal, setOpenModal] = useState(false)
-    const [modalData, setModalData] = useState(null)
+    const [selectedPlayers, setSelectedPlayers] = useState([])
+    const [modalData, setModalData] = useState([])
+    console.log("modalData", modalData)
 
     const classes = useStyles()
 
@@ -75,11 +77,35 @@ const PlayersTable = ({ playersData = [] }) => {
     }
 
     const handlePlayerCellClick = cell => {
-        setOpenModal(true)
-
-        setModalData(cell.row)
+        // setOpenModal(true)
+        //
+        // setModalData([
+        //     ...modalData,
+        //     cell.row
+        // ])
 
     }
+
+    // const handleOnRowSelected = selectedRow => {
+    //     // setOpenModal(true)
+    //
+    //     setModalData([
+    //         ...modalData,
+    //         selectedRow.data
+    //     ])
+    // }
+
+    const handleOnSelectionModelChange = ({ selectionModel }) => {
+        setSelectedPlayers(selectionModel)
+    }
+
+    const handleCompareClick = event => {
+        setOpenModal(true)
+    }
+
+    useEffect(() => {
+        setModalData(playersData.filter(player => selectedPlayers.includes(player.id)))
+    }, [selectedPlayers, playersData])
 
     return (
         <ContainerDiv>
@@ -97,7 +123,15 @@ const PlayersTable = ({ playersData = [] }) => {
                 data={playersData}
                 colHeaders={columns}
                 onCellClick={cell => handlePlayerCellClick(cell)}
+                // onRowSelected={handleOnRowSelected}
+                onSelectionModelChange={handleOnSelectionModelChange}
+                checkboxSelection
             />
+            <Button
+                variant="contained"
+                style={{backgroundColor: "green"}}
+                onClick={handleCompareClick}
+            >Compare</Button>
             <Modal
                 className={classes.modal}
                 open={openModal}

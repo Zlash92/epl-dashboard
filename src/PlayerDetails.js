@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import {Radar} from "react-chartjs-2";
 import {round} from "mathjs";
-import {COLOR_RADAR_CHART, COLOR_TEXT_WHITE} from "./Colors";
+import {COLOR_RADAR_CHART, COLOR_TEXT_WHITE, generateRandomColor} from "./Colors";
 import 'chartjs-plugin-datalabels';
 
 const ContainerDiv = styled.div`
@@ -74,36 +74,67 @@ const chartOptions = {
 }
 
 const PlayerDetails = ({data}) => {
+    // TODO: Support multiple players
     console.log("data received", data)
 
-    const {
-        player_name,
-        time,
-        goals90,
-        xG90,
-        shots90,
-        assists90,
-        xA90,
-        key_passes90,
-        xGChain90,
-        xGBuildup90
-    } = data || {}
+    const data2 = data.map(playerData => {
+        const {
+            player_name,
+            time,
+            goals90,
+            xG90,
+            shots90,
+            assists90,
+            xA90,
+            key_passes90,
+            xGChain90,
+            xGBuildup90
+        } = playerData
 
-    const playerData = [goals90, xG90, shots90, assists90, xA90, key_passes90, xGChain90, xGBuildup90]
+        return {
+            player_name,
+            time,
+            goals90,
+            xG90,
+            shots90,
+            assists90,
+            xA90,
+            key_passes90,
+            xGChain90,
+            xGBuildup90
+        }
+    })
+
+    // const {
+    //     player_name,
+    //     time,
+    //     goals90,
+    //     xG90,
+    //     shots90,
+    //     assists90,
+    //     xA90,
+    //     key_passes90,
+    //     xGChain90,
+    //     xGBuildup90
+    // } = data[1] || {}
+
+    // const playerData = [goals90, xG90, shots90, assists90, xA90, key_passes90, xGChain90, xGBuildup90]
 
     const radarData = {
         labels: ["Goals90", "xG90", "Shots90", "Assists90", "xA90", "KeyPasses90", "xGChain90", "xGBuildup90"],
-        datasets: [
-            {
+        datasets: data2.map(playerData => {
+            const { player_name, time, goals90, xG90, shots90, assists90, xA90, key_passes90, xGChain90, xGBuildup90 } = playerData
+            const playerColor = generateRandomColor()
+            return {
                 label: `${player_name} (${time} min)`,
                 data: [goals90, xG90, shots90, assists90, xA90, key_passes90, xGChain90, xGBuildup90].map(stat => {
                     if (stat !== undefined) return normalizeChartValue(stat)
                 }),
-                borderColor: COLOR_TEXT_WHITE,
+                borderColor: playerColor,
                 hoverBackgroundColor: "#0F0",
-                pointBackgroundColor: COLOR_TEXT_WHITE,
-            },
-        ],
+                pointBackgroundColor: playerColor,
+            }
+        }),
     }
 
     return (
