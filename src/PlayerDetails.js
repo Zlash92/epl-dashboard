@@ -42,6 +42,7 @@ const chartOptions = {
         }
     },
     tooltips: {
+        mode: 'index',
         titleFontSize: 15,
         bodyFontSize: 15,
         callbacks: {
